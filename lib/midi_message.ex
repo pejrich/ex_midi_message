@@ -39,6 +39,55 @@ defmodule MidiMessage do
 
   defmodule UnknownMessage, do: defstruct([:bytes])
 
+  @doc ~S"""
+  Decodes the given binary into a message struct.
+
+  ## Examples
+
+      iex> MidiMessage.decode(<<0x80, 0x3C, 0x40>>)
+      %MidiMessage.Channel.NoteOff{channel: 0, number: 60, velocity: 64}
+
+      iex> MidiMessage.decode(<<0xB1, 0x06, 0x40>>)
+      %MidiMessage.Channel.ControlChange{channel: 1, number: 6, value: 64}
+
+  Can handle control "channel mode" messages.
+  Set channel_mode_messages to `false` to disable.
+
+  ## Examples
+      iex> MidiMessage.decode(<<0xB0, 0x78, 0x00>>)
+      %MidiMessage.Channel.ControlChange.AllSoundOff{channel: 0}
+
+      iex> MidiMessage.decode(<<0xB0, 0x78, 0x00>>, channel_mode_messages: false)
+      %MidiMessage.Channel.ControlChange{channel: 0, number: 120, value: 0}
+
+  System Common Messages
+  Messages beginning with 0xF1 - 0xF7 are system common messages.
+
+  ## Examples
+      iex> MidiMessage.decode(<<0xF2, 0x39, 0x60>>)
+      %MidiMessage.SystemCommon.SongPositionPointer{beats: 12345}
+
+  System RealTime Messages
+  Messages beginning with 0xF8 - 0xFF are system real time messages.
+  They are also only one byte in length.
+
+  ## Examples
+      iex> MidiMessage.decode(<<0xF8>>)
+      %MidiMessage.SystemRealTime.TimingClock{}
+
+  System Exclusive (sysex) messages always begin with 0xF0.
+  Some system exclusive messages are included in the MIDI standard, under the name `Universal`.
+
+  Not many System Exclusive Decoders will be included in this package,
+  however you may define your own. Decoders must be manually specified.
+
+      iex> channel = 0x7F
+      iex> bytes = <<0xF0, 0x7E, channel, 0x06, 0x01, 0xF7>>
+      iex> MidiMessage.decode(bytes)
+      %MidiMessage.SystemExclusive.Unknown{bytes: bytes}
+      iex> MidiMessage.decode(bytes, system_exclusive_decoders: [MidiMessage.SystemExclusive.UniversalNonRealTime])
+      %MidiMessage.SystemExclusive.UniversalNonRealTime.IdentityRequest{channel: channel}
+  """
   def decode(message, options \\ [])
 
   def decode(<<0x8::4, channel::4, 0::1, number::7, 0::1, velocity::7>>, _options),

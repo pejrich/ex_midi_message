@@ -1,7 +1,7 @@
 defmodule MidiMessage.CommonTest do
-  import Bitwise
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   use Faker.Random
+  doctest MidiMessage
 
   alias MidiMessage.Channel.{
     NoteOff,
@@ -82,8 +82,7 @@ defmodule MidiMessage.CommonTest do
       channel = random_between(0, 15)
       value = random_between(0, 16383)
 
-      value_msb = value >>> 7
-      value_lsb = value &&& 0b1111111
+      <<value_msb::7, value_lsb::7>> = <<value::14>>
 
       bytes = <<0xE::4, channel::4, 0::1, value_lsb::7, 0::1, value_msb::7>>
       message = %PitchBend{channel: channel, value: value}
