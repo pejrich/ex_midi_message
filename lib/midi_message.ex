@@ -43,21 +43,20 @@ defmodule MidiMessage do
   Decodes the given binary into a message struct.
 
   ## Examples
-
-      iex> MidiMessage.decode(<<0x80, 0x3C, 0x40>>)
-      %MidiMessage.Channel.NoteOff{channel: 0, number: 60, velocity: 64}
-
-      iex> MidiMessage.decode(<<0xB1, 0x06, 0x40>>)
-      %MidiMessage.Channel.ControlChange{channel: 1, number: 6, value: 64}
+      iex> note_number = 60
+      iex> MidiMessage.decode(<<0x91, note_number, 0x40>>)
+      %MidiMessage.Channel.NoteOn{channel: 1, number: 60, velocity: 64}
+      iex> MidiMessage.decode(<<0x81, note_number, 0x20>>)
+      %MidiMessage.Channel.NoteOff{channel: 1, number: 60, velocity: 32}
 
   Can handle control "channel mode" messages.
   Set channel_mode_messages to `false` to disable.
 
   ## Examples
-      iex> MidiMessage.decode(<<0xB0, 0x78, 0x00>>)
+      iex> bytes = <<0xB0, 0x78, 0x00>>
+      iex> MidiMessage.decode(bytes)
       %MidiMessage.Channel.ControlChange.AllSoundOff{channel: 0}
-
-      iex> MidiMessage.decode(<<0xB0, 0x78, 0x00>>, channel_mode_messages: false)
+      iex> MidiMessage.decode(bytes, channel_mode_messages: false)
       %MidiMessage.Channel.ControlChange{channel: 0, number: 120, value: 0}
 
   System Common Messages
