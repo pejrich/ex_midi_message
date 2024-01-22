@@ -12,9 +12,7 @@ defmodule MidiMessage.SystemExclusive.UniversalTest do
 
       message = %Universal.NonRealTime.Unknown{
         bytes: bytes,
-        channel: channel,
-        sub_id_1: 0x00,
-        sub_id_2: 0x00
+        channel: channel
       }
 
       assert Universal.decode(bytes) == message
@@ -29,9 +27,7 @@ defmodule MidiMessage.SystemExclusive.UniversalTest do
 
       message = %Universal.RealTime.Unknown{
         bytes: bytes,
-        channel: channel,
-        sub_id_1: 0x00,
-        sub_id_2: 0x00
+        channel: channel
       }
 
       assert Universal.decode(bytes) == message

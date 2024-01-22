@@ -9,7 +9,7 @@ defmodule MidiMessage.SystemExclusive.Universal.RealTime do
     end
   end
 
-  def decode(<<0xF0, 0x7F, channel, sub_id_1, sub_id_2, _::binary>> = bytes) do
-    %Unknown{bytes: bytes, channel: channel, sub_id_1: sub_id_1, sub_id_2: sub_id_2}
+  def decode(<<0xF0, 0x7F, channel, _::binary>> = bytes) do
+    %Unknown{bytes: bytes, channel: channel}
   end
 end

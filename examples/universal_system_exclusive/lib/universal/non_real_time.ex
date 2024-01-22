@@ -36,7 +36,7 @@ defmodule MidiMessage.SystemExclusive.Universal.NonRealTime do
     %IdentityReply{channel: channel, id: id}
   end
 
-  def decode(<<0xF0, 0x7E, channel, sub_id_1, sub_id_2, _::binary>> = bytes) do
-    %Unknown{bytes: bytes, channel: channel, sub_id_1: sub_id_1, sub_id_2: sub_id_2}
+  def decode(<<0xF0, 0x7E, channel, _::binary>> = bytes) do
+    %Unknown{bytes: bytes, channel: channel}
   end
 end

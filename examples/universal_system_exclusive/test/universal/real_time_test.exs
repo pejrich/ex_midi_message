@@ -12,9 +12,7 @@ defmodule MidiMessage.SystemExclusive.Universal.RealTimeTest do
 
       message = %RealTime.Unknown{
         bytes: bytes,
-        channel: channel,
-        sub_id_1: 0x00,
-        sub_id_2: 0x00
+        channel: channel
       }
 
       assert RealTime.decode(bytes) == message
