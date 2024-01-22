@@ -7,7 +7,15 @@ defmodule MidiMessage.MixProject do
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      elixirc_paths: [
+        "lib",
+        "examples/universal_system_exclusive/lib"
+      ],
+      test_paths: [
+        "test",
+        "examples/universal_system_exclusive/test"
+      ]
     ]
   end
 

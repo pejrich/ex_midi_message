@@ -1,6 +1,6 @@
 defmodule MidiMessage.SystemTest do
   import Bitwise
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   use Faker.Random
 
   alias MidiMessage.SystemExclusive

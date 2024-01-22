@@ -1,26 +1,32 @@
-defmodule MidiMessage.SystemExclusive.UniversalNonRealTime do
-  # TODO: Fill this out.
-  # Information: https://www.midi.org/specifications-old/item/table-4-universal-system-exclusive-messages
+defmodule MidiMessage.SystemExclusive.Universal.NonRealTime do
+  alias MidiMessage.Encoding
+
   defmodule IdentityRequest do
     defstruct [:channel]
 
-    defimpl MidiMessage.Encoding do
+    defimpl Encoding do
       def encode(%IdentityRequest{channel: channel}),
         do: <<0xF0, 0x7E, channel, 0x06, 0x01, 0xF7>>
     end
   end
 
   defmodule IdentityReply do
-    defstruct([:channel, :id])
+    defstruct [:channel, :id]
 
-    defimpl MidiMessage.Encoding do
+    defimpl Encoding do
       def encode(%IdentityReply{channel: channel, id: id}) do
         <<0xF0, 0x7E, channel, 0x06, 0x02>> <> id <> <<0xF7>>
       end
     end
   end
 
-  defmodule Unknown, do: defstruct([:bytes])
+  defmodule Unknown do
+    defstruct([:bytes, :channel, :sub_id_1, :sub_id_2])
+
+    defimpl Encoding do
+      def encode(%Unknown{bytes: bytes}), do: bytes
+    end
+  end
 
   def decode(<<0xF0, 0x7E, channel, 0x06, 0x01, 0xF7>>), do: %IdentityRequest{channel: channel}
 
@@ -30,5 +36,7 @@ defmodule MidiMessage.SystemExclusive.UniversalNonRealTime do
     %IdentityReply{channel: channel, id: id}
   end
 
-  def decode(<<0xF0, 0x7E, _rest::binary>> = bytes), do: %Unknown{bytes: bytes}
+  def decode(<<0xF0, 0x7E, channel, sub_id_1, sub_id_2, _::binary>> = bytes) do
+    %Unknown{bytes: bytes, channel: channel, sub_id_1: sub_id_1, sub_id_2: sub_id_2}
+  end
 end

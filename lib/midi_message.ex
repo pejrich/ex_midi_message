@@ -84,8 +84,8 @@ defmodule MidiMessage do
       iex> bytes = <<0xF0, 0x7E, channel, 0x06, 0x01, 0xF7>>
       iex> MidiMessage.decode(bytes)
       %MidiMessage.SystemExclusive.Unknown{bytes: bytes}
-      iex> MidiMessage.decode(bytes, system_exclusive_decoders: [MidiMessage.SystemExclusive.UniversalNonRealTime])
-      %MidiMessage.SystemExclusive.UniversalNonRealTime.IdentityRequest{channel: channel}
+      iex> MidiMessage.decode(bytes, system_exclusive_decoders: [MidiMessage.SystemExclusive.Universal])
+      %MidiMessage.SystemExclusive.Universal.NonRealTime.IdentityRequest{channel: channel}
   """
   def decode(message, options \\ [])
 
