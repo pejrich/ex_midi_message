@@ -14,17 +14,17 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test on Elixir ${{matrix.elixir}}
+    name: Test on Elixir ${{ matrix.elixir }}
     strategy:
       matrix:
-        elixir: ['1.14', '1.15', '1.16']
-        otp-version: ['25']
+        elixir: [ '1.14', '1.15', '1.16' ]
+        otp-version: [ '25' ]
     steps:
       - name: Set up Elixir
         uses: erlef/setup-beam@v1
         with:
-          otp-version: ${{matrix.otp-version}}
-          elixir-version: ${{matrix.elixir}}
+          otp-version: ${{ matrix.otp-version }}
+          elixir-version: ${{ matrix.elixir }}
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -36,9 +36,9 @@ jobs:
           cache-name: cache-elixir-deps
         with:
           path: deps
-          key: ${{runner.os}}-mix-${{env.cache-name}}-${{ hashFiles('**/mix.lock') }}
+          key: ${{ runner.os }}-mix-${{ env.cache-name }}-${{ hashFiles('**/mix.lock') }}
           restore-keys: |
-            ${{runner.os}}-mix-${{ env.cache-name }}-
+            ${{ runner.os }}-mix-${{ env.cache-name }}-
 
       - name: Cache compiled build
         uses: actions/cache@v3
@@ -46,10 +46,10 @@ jobs:
           cache-name: cache-compiled-build
         with:
           path: _build
-          key: ${{runner.os}}-mix-${{env.cache-name}}-${{hashfiles('**/mix.lock')}}
+          key: ${{ runner.os }}-mix-${{ env.cache-name }}-${{ hashfiles('**/mix.lock') }}
           restore-keys: |
-            ${{runner.os}}-mix-${{env.cache-name}}-
-            ${{runner.os}}-mix-
+            ${{ runner.os }}-mix-${{ env.cache-name }}-
+            ${{ runner.os }}-mix-
 
       - name: Install dependencies
         run: mix deps.get
@@ -59,6 +59,7 @@ jobs:
 
       - name: Check Formatting
         run: mix format --check-formatted
+        if: ${{ matrix.elixir == '1.16' }}
 
       - name: Run tests
         run: mix test
