@@ -20,13 +20,7 @@ defmodule MidiMessage.SystemExclusive.Universal.NonRealTime do
     end
   end
 
-  defmodule Unknown do
-    defstruct([:bytes, :channel, :sub_id_1, :sub_id_2])
-
-    defimpl Encoding do
-      def encode(%Unknown{bytes: bytes}), do: bytes
-    end
-  end
+  defmodule Unknown, do: defstruct([:bytes, :channel])
 
   def decode(<<0xF0, 0x7E, channel, 0x06, 0x01, 0xF7>>), do: %IdentityRequest{channel: channel}
 

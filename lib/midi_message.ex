@@ -29,12 +29,14 @@ defmodule MidiMessage do
   end
 
   defprotocol Encoding do
+    @fallback_to_any true
     @spec encode(t) :: BitString.t()
     def encode(message)
   end
 
   defimpl Encoding, for: Any do
     def encode(%{bytes: <<bytes::binary>>}), do: bytes
+    def encode(value), do: raise(%Protocol.UndefinedError{protocol: Encoding, value: value})
   end
 
   defmodule UnknownMessage, do: defstruct([:bytes])
