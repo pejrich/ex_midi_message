@@ -172,8 +172,7 @@ defmodule MidiMessage do
               module when is_atom(module) -> [module.decode(bytes)]
             end
           rescue
-            e ->
-              IO.inspect(e)
+            _e ->
               []
           end
         end
