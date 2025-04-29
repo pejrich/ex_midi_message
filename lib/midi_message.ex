@@ -11,7 +11,8 @@ defmodule MidiMessage do
     ControlChange,
     ProgramChange,
     ChannelPressure,
-    PitchBend
+    PitchBend,
+    KeySignature
   }
 
   alias __MODULE__.{SystemCommon, SystemRealTime, SystemExclusive}
@@ -90,6 +91,41 @@ defmodule MidiMessage do
       %MidiMessage.SystemExclusive.Universal.NonRealTime.IdentityRequest{channel: channel}
   """
   def decode(message, options \\ [])
+
+  def decode(<<0xFF, 0x59, 0x02, sf::bytes-size(1), mm::bytes-size(1)>>, _) do
+    case {sf, mm} do
+      {<<-7>>, <<0x00>>} -> %KeySignature{pitch: "Cb", mode: :major}
+      {<<-6>>, <<0x00>>} -> %KeySignature{pitch: "Gb", mode: :major}
+      {<<-5>>, <<0x00>>} -> %KeySignature{pitch: "Db", mode: :major}
+      {<<-4>>, <<0x00>>} -> %KeySignature{pitch: "Ab", mode: :major}
+      {<<-3>>, <<0x00>>} -> %KeySignature{pitch: "Eb", mode: :major}
+      {<<-2>>, <<0x00>>} -> %KeySignature{pitch: "Bb", mode: :major}
+      {<<-1>>, <<0x00>>} -> %KeySignature{pitch: "F", mode: :major}
+      {<<0>>, <<0x00>>} -> %KeySignature{pitch: "C", mode: :major}
+      {<<1>>, <<0x00>>} -> %KeySignature{pitch: "G", mode: :major}
+      {<<2>>, <<0x00>>} -> %KeySignature{pitch: "D", mode: :major}
+      {<<3>>, <<0x00>>} -> %KeySignature{pitch: "A", mode: :major}
+      {<<4>>, <<0x00>>} -> %KeySignature{pitch: "E", mode: :major}
+      {<<5>>, <<0x00>>} -> %KeySignature{pitch: "B", mode: :major}
+      {<<6>>, <<0x00>>} -> %KeySignature{pitch: "F#", mode: :major}
+      {<<7>>, <<0x00>>} -> %KeySignature{pitch: "C#", mode: :major}
+      {<<-7>>, <<0x01>>} -> %KeySignature{pitch: "Ab", mode: :minor}
+      {<<-6>>, <<0x01>>} -> %KeySignature{pitch: "Eb", mode: :minor}
+      {<<-5>>, <<0x01>>} -> %KeySignature{pitch: "Bb", mode: :minor}
+      {<<-4>>, <<0x01>>} -> %KeySignature{pitch: "F", mode: :minor}
+      {<<-3>>, <<0x01>>} -> %KeySignature{pitch: "C", mode: :minor}
+      {<<-2>>, <<0x01>>} -> %KeySignature{pitch: "G", mode: :minor}
+      {<<-1>>, <<0x01>>} -> %KeySignature{pitch: "D", mode: :minor}
+      {<<0>>, <<0x01>>} -> %KeySignature{pitch: "A", mode: :minor}
+      {<<1>>, <<0x01>>} -> %KeySignature{pitch: "E", mode: :minor}
+      {<<2>>, <<0x01>>} -> %KeySignature{pitch: "B", mode: :minor}
+      {<<3>>, <<0x01>>} -> %KeySignature{pitch: "F#", mode: :minor}
+      {<<4>>, <<0x01>>} -> %KeySignature{pitch: "C#", mode: :minor}
+      {<<5>>, <<0x01>>} -> %KeySignature{pitch: "G#", mode: :minor}
+      {<<6>>, <<0x01>>} -> %KeySignature{pitch: "D#", mode: :minor}
+      {<<7>>, <<0x01>>} -> %KeySignature{pitch: "A#", mode: :minor}
+    end
+  end
 
   def decode(<<0x8::4, channel::4, 0::1, number::7, 0::1, velocity::7>>, _options),
     do: %NoteOff{channel: channel, number: number, velocity: velocity}

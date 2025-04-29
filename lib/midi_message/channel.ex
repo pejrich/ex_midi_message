@@ -2,6 +2,8 @@ defmodule MidiMessage.Channel do
   defmodule NoteOff,
     do: defstruct([:channel, :number, :velocity])
 
+  defmodule KeySignature, do: defstruct([:pitch, :mode])
+
   defmodule NoteOn,
     do: defstruct([:channel, :number, :velocity])
 
