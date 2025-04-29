@@ -109,13 +109,13 @@ defmodule MidiMessage do
       {<<5>>, <<0x00>>} -> %KeySignature{pitch: "B", mode: :major}
       {<<6>>, <<0x00>>} -> %KeySignature{pitch: "F#", mode: :major}
       {<<7>>, <<0x00>>} -> %KeySignature{pitch: "C#", mode: :major}
-      {<<-7>>, <<0x01>>} -> %KeySignature{pitch: "Ab", mode: :minor}
-      {<<-6>>, <<0x01>>} -> %KeySignature{pitch: "Eb", mode: :minor}
-      {<<-5>>, <<0x01>>} -> %KeySignature{pitch: "Bb", mode: :minor}
-      {<<-4>>, <<0x01>>} -> %KeySignature{pitch: "F", mode: :minor}
-      {<<-3>>, <<0x01>>} -> %KeySignature{pitch: "C", mode: :minor}
-      {<<-2>>, <<0x01>>} -> %KeySignature{pitch: "G", mode: :minor}
-      {<<-1>>, <<0x01>>} -> %KeySignature{pitch: "D", mode: :minor}
+      {<<249>>, <<0x01>>} -> %KeySignature{pitch: "Ab", mode: :minor}
+      {<<250>>, <<0x01>>} -> %KeySignature{pitch: "Eb", mode: :minor}
+      {<<251>>, <<0x01>>} -> %KeySignature{pitch: "Bb", mode: :minor}
+      {<<252>>, <<0x01>>} -> %KeySignature{pitch: "F", mode: :minor}
+      {<<253>>, <<0x01>>} -> %KeySignature{pitch: "C", mode: :minor}
+      {<<254>>, <<0x01>>} -> %KeySignature{pitch: "G", mode: :minor}
+      {<<255>>, <<0x01>>} -> %KeySignature{pitch: "D", mode: :minor}
       {<<0>>, <<0x01>>} -> %KeySignature{pitch: "A", mode: :minor}
       {<<1>>, <<0x01>>} -> %KeySignature{pitch: "E", mode: :minor}
       {<<2>>, <<0x01>>} -> %KeySignature{pitch: "B", mode: :minor}
@@ -124,6 +124,7 @@ defmodule MidiMessage do
       {<<5>>, <<0x01>>} -> %KeySignature{pitch: "G#", mode: :minor}
       {<<6>>, <<0x01>>} -> %KeySignature{pitch: "D#", mode: :minor}
       {<<7>>, <<0x01>>} -> %KeySignature{pitch: "A#", mode: :minor}
+      _ -> %KeySignature{pitch: "C", mode: :major}
     end
   end
 
