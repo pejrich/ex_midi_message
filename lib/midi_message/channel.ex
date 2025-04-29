@@ -52,9 +52,6 @@ defmodule MidiMessage.Channel do
     def as_control_change_message(%__MODULE__{} = message), do: message
   end
 
-  defmodule ProgramChange,
-    do: defstruct([:channel, :number])
-
   defmodule ChannelPressure,
     do: defstruct([:channel, :pressure])
 

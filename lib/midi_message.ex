@@ -150,7 +150,7 @@ defmodule MidiMessage do
   def decode(<<0xB::4, _>> = bytes, _), do: raise(%InvalidMessage{bytes: bytes})
 
   def decode(<<0xC::4, channel::4, 0::1, number::7>>, _options),
-    do: %ProgramChange{channel: channel, number: number}
+    do: ProgramChange.decode(<<channel, number>>)
 
   def decode(<<0xC::4, _>> = bytes, _), do: raise(%InvalidMessage{bytes: bytes})
 
