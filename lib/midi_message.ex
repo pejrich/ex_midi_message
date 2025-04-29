@@ -94,13 +94,13 @@ defmodule MidiMessage do
 
   def decode(<<0xFF, 0x59, 0x02, sf::bytes-size(1), mm::bytes-size(1)>>, _) do
     case {sf, mm} do
-      {<<-7>>, <<0x00>>} -> %KeySignature{pitch: "Cb", mode: :major}
-      {<<-6>>, <<0x00>>} -> %KeySignature{pitch: "Gb", mode: :major}
-      {<<-5>>, <<0x00>>} -> %KeySignature{pitch: "Db", mode: :major}
-      {<<-4>>, <<0x00>>} -> %KeySignature{pitch: "Ab", mode: :major}
-      {<<-3>>, <<0x00>>} -> %KeySignature{pitch: "Eb", mode: :major}
-      {<<-2>>, <<0x00>>} -> %KeySignature{pitch: "Bb", mode: :major}
-      {<<-1>>, <<0x00>>} -> %KeySignature{pitch: "F", mode: :major}
+      {<<249>>, <<0x00>>} -> %KeySignature{pitch: "Cb", mode: :major}
+      {<<250>>, <<0x00>>} -> %KeySignature{pitch: "Gb", mode: :major}
+      {<<251>>, <<0x00>>} -> %KeySignature{pitch: "Db", mode: :major}
+      {<<252>>, <<0x00>>} -> %KeySignature{pitch: "Ab", mode: :major}
+      {<<253>>, <<0x00>>} -> %KeySignature{pitch: "Eb", mode: :major}
+      {<<254>>, <<0x00>>} -> %KeySignature{pitch: "Bb", mode: :major}
+      {<<255>>, <<0x00>>} -> %KeySignature{pitch: "F", mode: :major}
       {<<0>>, <<0x00>>} -> %KeySignature{pitch: "C", mode: :major}
       {<<1>>, <<0x00>>} -> %KeySignature{pitch: "G", mode: :major}
       {<<2>>, <<0x00>>} -> %KeySignature{pitch: "D", mode: :major}
