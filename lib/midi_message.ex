@@ -256,8 +256,8 @@ defmodule MidiMessage do
   defp decode_control(<<0xB::4, channel::4, 0b01111::5, 7::3, 0::1, 0::7>>, _options),
     do: %ControlChange.PolyModeOn{channel: channel}
 
-  defp decode_control(<<0xB::4, channel::4, 0::1, number::7, 0::1, value::7>>, _options),
-    do: %ControlChange{channel: channel, number: number, value: value}
+  defp decode_control(<<0xB::4, _::4, _::binary>> = raw, _options),
+    do: ControlChange.decode(raw)
 
   def encode(%NoteOff{channel: channel, number: number, velocity: velocity}),
     do: <<0x8::4, channel::4, 0::1, number::7, 0::1, velocity::7>>
