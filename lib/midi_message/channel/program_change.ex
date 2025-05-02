@@ -131,6 +131,9 @@ defmodule MidiMessage.Channel.ProgramChange do
     {0x7E, "Sound effects", 126, "Applause"},
     {0x7F, "Sound effects", 127, "Gunshot"}
   ]
+  @list_programs Enum.map(@data, fn {_, a, b, c} -> %{number: b, program: c, group: a} end)
+  def list_programs, do: @list_programs
+
   Enum.each(@data, fn {_hex, group, number, name} ->
     def decode(<<channel, unquote(number)>>),
       do: %__MODULE__{
