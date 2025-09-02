@@ -12,7 +12,8 @@ defmodule MidiMessage do
     ProgramChange,
     ChannelPressure,
     PitchBend,
-    KeySignature
+    KeySignature,
+    TimeSignature
   }
 
   alias __MODULE__.{SystemCommon, SystemRealTime, SystemExclusive}
@@ -91,6 +92,10 @@ defmodule MidiMessage do
       %MidiMessage.SystemExclusive.Universal.NonRealTime.IdentityRequest{channel: channel}
   """
   def decode(message, options \\ [])
+
+  def decode(<<0xFF, 0x58, 0x04, num, pow, _, _>>, _) do
+    %TimeSignature{numerator: num, denominator: 2 ** pow}
+  end
 
   def decode(<<0xFF, 0x59, 0x02, sf::bytes-size(1), mm::bytes-size(1)>>, _) do
     case {sf, mm} do
